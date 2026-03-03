@@ -1,0 +1,89 @@
+{{ define "main" }}
+<section class="page-hero">
+  <div class="container">
+    <div class="section-eyebrow">// Intelligence technologique · Temps réel</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.75rem;">
+      Veille <span style="color:var(--cyan)">Stratégique</span>
+    </h1>
+    <p style="color:var(--text-secondary);font-size:.9rem;max-width:620px;line-height:1.8;">
+      Agrégation de sources vérifiées en cybersécurité, infrastructure open source et tendances DSI.
+    </p>
+    <div style="display:flex;align-items:center;gap:.75rem;margin-top:1.5rem;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);">
+      <span style="width:7px;height:7px;background:var(--green-ok);border-radius:50%;box-shadow:0 0 8px var(--green-ok);animation:pulse 2s infinite;display:inline-block;"></span>
+      Flux live · Actualisation automatique
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-eyebrow" style="margin-bottom:.5rem;">// Flux RSS agrégés</div>
+    <h2 class="section-title" style="margin-bottom:2rem;">Intelligence en temps réel</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:4rem;">
+      <div class="news-col">
+        <div class="news-col-header">
+          <span>🔐</span>
+          <span class="news-col-title" style="font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">CYBERSECURITY</span>
+        </div>
+        <div class="news-items" id="v-cyber">
+          <div class="news-loading">Chargement…<div class="news-loading-bar"></div></div>
+        </div>
+      </div>
+      <div class="news-col">
+        <div class="news-col-header">
+          <span>🌐</span>
+          <span class="news-col-title" style="font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">TECH & CLOUD</span>
+        </div>
+        <div class="news-items" id="v-tech">
+          <div class="news-loading">Chargement…<div class="news-loading-bar"></div></div>
+        </div>
+      </div>
+      <div class="news-col">
+        <div class="news-col-header">
+          <span>⬡</span>
+          <span class="news-col-title" style="font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">OPEN SOURCE</span>
+        </div>
+        <div class="news-items" id="v-oss">
+          <div class="news-loading">Chargement…<div class="news-loading-bar"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const RSS = 'https://api.rss2json.com/v1/api.json';
+const FEEDS = {
+  cyber: [
+    { name:'The Hacker News', url:'https://feeds.feedburner.com/TheHackersNews' },
+    { name:'Bleeping Computer', url:'https://www.bleepingcomputer.com/feed/' },
+  ],
+  tech: [
+    { name:'LeMagIT', url:'https://www.lemagit.fr/rss/AllArticles.rss' },
+    { name:'Korben', url:'https://korben.info/feed' },
+  ],
+  oss: [
+    { name:'Linux Foundation', url:'https://www.linuxfoundation.org/feed/' },
+    { name:'Phoronix', url:'https://www.phoronix.com/rss.php' },
+  ]
+};
+function tAgo(d){const s=Math.floor((Date.now()-new Date(d))/1000);if(s<60)return"instant";if(s<3600)return`${Math.floor(s/60)}min`;if(s<86400)return`${Math.floor(s/3600)}h`;return`${Math.floor(s/86400)}j`;}
+function trunc(s,n=95){return s&&s.length>n?s.slice(0,n)+'…':s||'';}
+async function loadFeed(sources){
+  const all=await Promise.all(sources.map(async s=>{
+    try{const r=await fetch(`${RSS}?rss_url=${encodeURIComponent(s.url)}&count=4`);const d=await r.json();if(d.status!=='ok')return[];return d.items.map(i=>({title:i.title,link:i.link,date:i.pubDate,source:s.name}));}catch{return[];}
+  }));
+  return all.flat().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,7);
+}
+function renderFeed(items,id){
+  const el=document.getElementById(id);if(!el)return;
+  if(!items.length){el.innerHTML='<div class="news-loading">⚠ Flux indisponible</div>';return;}
+  el.innerHTML=items.map(i=>`<a class="news-item" href="${i.link}" target="_blank" rel="noopener"><span class="news-item-title">${trunc(i.title)}</span><span class="news-item-meta"><span class="news-item-source">${i.source}</span><span class="news-dot">●</span><span>${tAgo(i.date)}</span></span></a>`).join('');
+}
+(async()=>{
+  const[cyber,tech,oss]=await Promise.all([loadFeed(FEEDS.cyber),loadFeed(FEEDS.tech),loadFeed(FEEDS.oss)]);
+  renderFeed(cyber,'v-cyber');renderFeed(tech,'v-tech');renderFeed(oss,'v-oss');
+})();
+</script>
+{{ end }}

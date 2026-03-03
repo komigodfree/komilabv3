@@ -1,0 +1,8 @@
+[
+  {"name":"CCNP ENCOR","body":"Enterprise Core — Routing, Switching, Security","issuer":"Cisco","status":"Actif"},
+  {"name":"CCNA","body":"Cisco Certified Network Associate","issuer":"Cisco","status":"Actif"},
+  {"name":"ISO 27001 LI","body":"Lead Implementer — Implémentation SMSI","issuer":"PECB","status":"Actif"},
+  {"name":"Security+","body":"Cybersécurité fondamentale — Threats, PKI","issuer":"CompTIA","status":"Actif"},
+  {"name":"CySA+","body":"Cybersecurity Analyst — SIEM, incident response","issuer":"CompTIA","status":"Actif"},
+  {"name":"AWS CCP","body":"Fondamentaux cloud AWS","issuer":"Amazon","status":"Actif"}
+]

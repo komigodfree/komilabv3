@@ -1,0 +1,26 @@
+baseURL = "https://komilab.org"
+languageCode = "fr-FR"
+title = "KomiLab"
+
+[params]
+  description = "Laboratoire digital d'ingénierie IT open source"
+  author = "Komi Kpodohoui"
+  github = "https://github.com/komigodfree"
+  linkedin = "https://www.linkedin.com/in/komi-mawuli-kpodohouin-866bb8155"
+  email = "contact@komilab.org"
+  slogan = "Build. Secure. Govern. Scale."
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  level = "levels"
+
+[pagination]
+  pagerSize = 12
+
+[markup.highlight]
+  style = "dracula"
+  lineNos = false
+
+[markup.goldmark.renderer]
+  unsafe = true

@@ -1,0 +1,111 @@
+{{ define "main" }}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        ENGINEERING LAB · OPEN SOURCE · PRODUCTION-GRADE
+      </div>
+      <h1 class="hero-title">
+        Build.<br>
+        <span style="color:var(--cyan)">Secure.</span><br>
+        Govern. Scale.
+      </h1>
+      <p class="hero-sub">
+        Laboratoire digital d'ingénierie IT open source. Architecture multi-sites, cybersécurité, gouvernance ISO 27001 et automatisation.
+      </p>
+      <div class="hero-actions">
+        <a href="{{ "/labs/" | relURL }}" class="btn btn-primary">≡ Explorer les Labs</a>
+        <a href="{{ .Site.Params.github }}" target="_blank" class="btn btn-ghost">⬡ GitHub</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-value" data-counter="{{ len (where .Site.RegularPages "Section" "labs") }}">0</div>
+        <div class="stat-label">Labs publiés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Open Source</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LABS RÉCENTS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-eyebrow">// Labs récents</div>
+        <h2 class="section-title">Derniers labs publiés</h2>
+      </div>
+      <a href="{{ "/labs/" | relURL }}" class="btn btn-ghost">Voir tous les labs →</a>
+    </div>
+    <div class="labs-grid">
+      {{ range first 4 (where .Site.RegularPages "Section" "labs") }}
+      <article class="lab-card animate-in">
+        <div class="lab-card-meta">
+          <span class="lab-level level-{{ lower .Params.level }}">{{ .Params.level }}</span>
+          <span class="lab-env">⬡ {{ .Params.environment }}</span>
+        </div>
+        <h3 class="lab-card-title">{{ .Title }}</h3>
+        <p class="lab-card-excerpt">{{ .Description }}</p>
+        <div class="lab-card-footer">
+          <div class="lab-tags">
+            {{ range first 3 .Params.tags }}
+            <span class="lab-tag">{{ . }}</span>
+            {{ end }}
+          </div>
+          <span class="lab-duration">⏱ {{ .Params.duration }}</span>
+        </div>
+        <a href="{{ .RelPermalink }}" class="lab-card-link">
+          Accéder au lab
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="2" y1="8" x2="14" y2="8"/><polyline points="9,3 14,8 9,13"/>
+          </svg>
+        </a>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- RSS VEILLE -->
+<section class="section" style="background:var(--bg-deep);border-top:1px solid var(--bg-border);border-bottom:1px solid var(--bg-border);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-eyebrow">// Intelligence temps réel</div>
+        <h2 class="section-title">Tech & Cyber Intelligence</h2>
+      </div>
+      <a href="{{ "/veille/" | relURL }}" class="btn btn-ghost">Voir toute la veille →</a>
+    </div>
+    <div class="news-grid">
+      <div class="news-col">
+        <div class="news-col-header">
+          <span class="news-col-dot"></span>
+          <span class="news-col-title">CYBERSECURITY</span>
+          <span class="badge badge-green">Live</span>
+        </div>
+        <div class="news-items" id="rss-cyber">
+          <div class="news-loading">Chargement…<div class="news-loading-bar"></div></div>
+        </div>
+      </div>
+      <div class="news-col">
+        <div class="news-col-header">
+          <span class="news-col-dot" style="background:var(--blue-mid)"></span>
+          <span class="news-col-title">TECH WORLD</span>
+          <span class="badge badge-green">Live</span>
+        </div>
+        <div class="news-items" id="rss-tech">
+          <div class="news-loading">Chargement…<div class="news-loading-bar"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ end }}

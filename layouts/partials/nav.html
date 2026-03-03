@@ -1,0 +1,22 @@
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="{{ "/" | relURL }}" class="nav-logo">
+      <div class="logo-mark">KL</div>
+      <span class="logo-text">komi<span>lab</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="{{ "/labs/" | relURL }}" class="nav-link {{ if eq .Section "labs" }}active{{ end }}">Labs</a>
+      <a href="{{ "/veille/" | relURL }}" class="nav-link {{ if eq .RelPermalink "/veille/" }}active{{ end }}">Veille</a>
+      <a href="{{ "/about/" | relURL }}" class="nav-link {{ if eq .RelPermalink "/about/" }}active{{ end }}">À propos</a>
+    </div>
+    <a href="{{ "/labs/" | relURL }}" class="nav-cta">Explorer les labs →</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="{{ "/labs/" | relURL }}" class="mobile-nav-link">Labs</a>
+  <a href="{{ "/veille/" | relURL }}" class="mobile-nav-link">Veille</a>
+  <a href="{{ "/about/" | relURL }}" class="mobile-nav-link">À propos</a>
+</div>

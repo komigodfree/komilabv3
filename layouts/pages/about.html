@@ -1,0 +1,96 @@
+{{ define "main" }}
+<section class="page-hero">
+  <div class="container">
+    <div class="section-eyebrow">// Ingénieur · CISO · Architecte</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.75rem;">
+      À propos de <span style="color:var(--cyan)">KomiLab</span>
+    </h1>
+    <p style="color:var(--text-secondary);font-size:.9rem;max-width:620px;line-height:1.8;">
+      KomiLab est le laboratoire digital de Komi Kpodohoui — CISO, ingénieur réseau et architecte IT, certifié CCNP et ISO 27001 Lead Implementer.
+    </p>
+  </div>
+</section>
+
+<div class="container" style="padding:4rem 0;">
+
+  <div style="display:grid;grid-template-columns:280px 1fr;gap:3rem;margin-bottom:4rem;">
+
+    <!-- CARD PROFIL -->
+    <div style="background:var(--bg-card);border:1px solid var(--bg-border);border-radius:var(--radius-lg);padding:2rem;text-align:center;position:sticky;top:80px;">
+      <div style="width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--cyan-ghost),rgba(37,99,235,0.2));border:2px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--cyan);margin:0 auto 1rem;">KK</div>
+      <div style="font-family:var(--font-mono);font-size:1rem;font-weight:700;margin-bottom:.25rem;">Komi Kpodohoui</div>
+      <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--cyan);margin-bottom:1rem;">CISO · Network Architect · ISO 27001 LI</div>
+      <div style="display:flex;flex-direction:column;gap:.45rem;text-align:left;margin-bottom:1.25rem;">
+        <div style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary);">📍 Togo, Afrique de l'Ouest</div>
+        <div style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary);">💼 CISO — SGMT</div>
+        <div style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary);">⭐ 10 ans d'expérience</div>
+      </div>
+      <div style="display:flex;gap:.5rem;justify-content:center;">
+        <a href="{{ .Site.Params.github }}" target="_blank" class="footer-social">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        </a>
+        <a href="{{ .Site.Params.linkedin }}" target="_blank" class="footer-social">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="mailto:{{ .Site.Params.email }}" class="footer-social">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- BIO -->
+    <div>
+      <div class="section-eyebrow" style="margin-bottom:.5rem;">// Mission</div>
+      <h2 style="font-size:1.4rem;margin-bottom:1rem;">Pourquoi KomiLab ?</h2>
+      <p style="color:var(--text-secondary);font-size:.88rem;line-height:1.85;margin-bottom:1rem;">
+        Après 10 ans à concevoir des infrastructures IT dans des environnements industriels multi-sites, j'ai accumulé une expertise que les blogs classiques ne documentent pas : les vraies décisions d'architecture, les vraies erreurs rencontrées, les vraies contraintes de production.
+      </p>
+      <p style="color:var(--text-secondary);font-size:.88rem;line-height:1.85;margin-bottom:2rem;">
+        KomiLab est ma réponse à ce manque. Chaque lab est issu d'un contexte réel : SGMT ou KOMI.LAB. La dimension gouvernance est systématiquement intégrée car la technique sans cadre de maîtrise reste fragile.
+      </p>
+
+      <!-- CERTIFICATIONS -->
+      <div class="section-eyebrow" style="margin-bottom:.75rem;">// Certifications</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:2rem;">
+        {{ range .Site.Data.certifications }}
+        <div style="background:var(--bg-card);border:1px solid var(--bg-border);border-radius:var(--radius-md);padding:1rem 1.25rem;">
+          <div style="font-family:var(--font-mono);font-size:.78rem;font-weight:700;color:var(--cyan);margin-bottom:.25rem;">{{ .name }}</div>
+          <div style="font-size:.75rem;color:var(--text-secondary);line-height:1.5;">{{ .body }}</div>
+          <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);margin-top:.4rem;">{{ .issuer }} · {{ .status }}</div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contact" style="margin-bottom:4rem;">
+    <div class="section-eyebrow" style="margin-bottom:.5rem;">// Collaboration</div>
+    <h2 class="section-title" style="margin-bottom:1.5rem;">Contact</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+      <a href="mailto:{{ .Site.Params.email }}" style="text-decoration:none;">
+        <div class="domain-card" style="cursor:pointer;">
+          <span class="domain-icon">✉️</span>
+          <div class="domain-title">Email direct</div>
+          <div class="domain-count">{{ .Site.Params.email }}</div>
+        </div>
+      </a>
+      <a href="{{ .Site.Params.linkedin }}" target="_blank" style="text-decoration:none;">
+        <div class="domain-card" style="cursor:pointer;">
+          <span class="domain-icon">💼</span>
+          <div class="domain-title">LinkedIn</div>
+          <div class="domain-count">Komi Kpodohoui</div>
+        </div>
+      </a>
+      <a href="{{ .Site.Params.github }}" target="_blank" style="text-decoration:none;">
+        <div class="domain-card" style="cursor:pointer;">
+          <span class="domain-icon">⬡</span>
+          <div class="domain-title">GitHub</div>
+          <div class="domain-count">komigodfree</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+{{ end }}

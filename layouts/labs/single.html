@@ -1,0 +1,107 @@
+{{ define "main" }}
+<style>
+  .article-layout{display:grid;grid-template-columns:1fr 280px;gap:3rem;align-items:start;}
+  .article-hero{padding:6rem 0 3rem;background:var(--bg-deep);border-bottom:1px solid var(--bg-border);position:relative;overflow:hidden;}
+  .article-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;}
+  .article-hero-inner{position:relative;z-index:1;}
+  .article-breadcrumb{display:flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);margin-bottom:1.5rem;}
+  .article-breadcrumb a{color:var(--text-muted);}
+  .article-breadcrumb a:hover{color:var(--cyan);}
+  .article-title{font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.15;margin-bottom:1rem;}
+  .article-excerpt{font-size:.92rem;color:var(--text-secondary);max-width:720px;line-height:1.8;margin-bottom:1.5rem;}
+  .article-info-bar{display:flex;gap:1.5rem;flex-wrap:wrap;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);padding-top:1.25rem;border-top:1px solid var(--bg-border);}
+  .article-content{padding:3rem 0;}
+  .article-content h2{font-size:1.3rem;color:var(--text-primary);margin:2rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--bg-border);}
+  .article-content h3{font-size:1rem;font-weight:600;color:var(--text-primary);margin:1.5rem 0 .75rem;}
+  .article-content p{font-size:.88rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem;}
+  .article-content ul,.article-content ol{padding-left:1.25rem;margin-bottom:1rem;}
+  .article-content li{font-size:.88rem;color:var(--text-secondary);line-height:1.7;margin-bottom:.35rem;}
+  .article-content ul li::marker{color:var(--cyan);}
+  .article-content pre{margin:1.5rem 0;border-radius:var(--radius-md);overflow-x:auto;}
+  .article-content code{font-family:var(--font-code);font-size:.82rem;}
+  .article-content blockquote{border-left:3px solid var(--cyan);padding:.75rem 1.25rem;margin:1.25rem 0;background:var(--cyan-ghost);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.85rem;color:var(--text-secondary);}
+  .article-content table{width:100%;border-collapse:collapse;font-size:.82rem;margin:1.5rem 0;}
+  .article-content th{font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);padding:.75rem 1rem;background:rgba(0,0,0,.2);border-bottom:1px solid var(--bg-border);text-align:left;}
+  .article-content td{padding:.75rem 1rem;color:var(--text-secondary);border-bottom:1px solid rgba(26,35,64,.4);}
+  .sidebar{position:sticky;top:80px;}
+  .sidebar-card{background:var(--bg-card);border:1px solid var(--bg-border);border-radius:var(--radius-md);padding:1.25rem;margin-bottom:1rem;}
+  .sidebar-title{font-family:var(--font-mono);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.85rem;}
+  .toc-list{display:flex;flex-direction:column;gap:.35rem;}
+  .toc a{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);padding:.3rem .5rem;border-radius:var(--radius-sm);display:block;border-left:2px solid transparent;transition:all var(--transition);}
+  .toc a:hover{color:var(--cyan);background:var(--cyan-ghost);border-left-color:var(--cyan);}
+  .meta-item{display:flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary);margin-bottom:.6rem;}
+  .meta-item .meta-key{color:var(--text-muted);min-width:80px;}
+  .progress-bar{height:3px;background:var(--bg-border);border-radius:2px;margin-top:1rem;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--cyan);width:0%;transition:width .2s ease;}
+  @media(max-width:1024px){.article-layout{grid-template-columns:1fr;}.sidebar{position:static;}}
+</style>
+
+<section class="article-hero">
+  <div class="container article-hero-inner">
+    <div class="article-breadcrumb">
+      <a href="{{ "/" | relURL }}">KomiLab</a><span>/</span>
+      <a href="{{ "/labs/" | relURL }}">Labs</a><span>/</span>
+      <span style="color:var(--text-secondary)">{{ .Title }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem;">
+      <span class="lab-level level-{{ lower .Params.level }}">{{ .Params.level }}</span>
+      <span class="badge badge-cyan">{{ .Params.category }}</span>
+      <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);">⬡ {{ .Params.environment }}</span>
+    </div>
+    <h1 class="article-title">{{ .Title }}</h1>
+    <p class="article-excerpt">{{ .Description }}</p>
+    <div class="article-info-bar">
+      <div><span style="color:var(--text-muted)">Durée : </span>⏱ {{ .Params.duration }}</div>
+      <div><span style="color:var(--text-muted)">Publié : </span>{{ .Date.Format "2 January 2006" }}</div>
+      <div><span style="color:var(--text-muted)">Auteur : </span>{{ .Site.Params.author }}</div>
+    </div>
+  </div>
+</section>
+
+<div class="container article-content">
+  <div class="article-layout">
+    <main>
+      {{ .Content }}
+      <div style="display:flex;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--bg-border);gap:1rem;flex-wrap:wrap;margin-top:2rem;">
+        <a href="{{ "/labs/" | relURL }}" class="btn btn-ghost">← Retour aux labs</a>
+        {{ with .NextInSection }}<a href="{{ .RelPermalink }}" class="btn btn-outline">Suivant → {{ .Title }}</a>{{ end }}
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">Table des matières</div>
+        {{ .TableOfContents }}
+        <div class="progress-bar"><div class="progress-fill" id="read-progress"></div></div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-title">Fiche Lab</div>
+        <div class="meta-item"><span class="meta-key">Niveau</span><span class="lab-level level-{{ lower .Params.level }}" style="padding:.1rem .5rem;">{{ .Params.level }}</span></div>
+        <div class="meta-item"><span class="meta-key">Durée</span><span>⏱ {{ .Params.duration }}</span></div>
+        <div class="meta-item"><span class="meta-key">Env.</span><span>{{ .Params.environment }}</span></div>
+        <div class="meta-item"><span class="meta-key">Publié</span><span>{{ .Date.Format "02/01/2006" }}</span></div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-title">Technologies</div>
+        <div class="lab-tags" style="gap:.4rem;">
+          {{ range .Params.tags }}<span class="lab-tag">{{ . }}</span>{{ end }}
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <a href="{{ "/labs/" | relURL }}" class="btn btn-ghost" style="width:100%;justify-content:center;font-size:.72rem;">← Tous les labs</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const pf = document.getElementById('read-progress');
+if(pf) window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  pf.style.width = Math.min(100,(d.scrollTop||document.body.scrollTop)/(d.scrollHeight-d.clientHeight)*100)+'%';
+},{passive:true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+{{ end }}

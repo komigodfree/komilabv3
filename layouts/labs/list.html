@@ -1,0 +1,124 @@
+{{ define "main" }}
+<section class="labs-hero">
+  <div class="container">
+    <div class="section-eyebrow">// Catalogue complet</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.75rem;">
+      Labs <span style="color:var(--cyan)">Techniques</span>
+    </h1>
+    <p style="color:var(--text-secondary);font-size:.9rem;max-width:560px;line-height:1.7;">
+      Modes opératoires documentés depuis des environnements réels.
+    </p>
+    <div style="display:flex;gap:2rem;margin-top:2rem;">
+      <div style="font-family:var(--font-mono);">
+        <span style="font-size:1.5rem;font-weight:700;color:var(--cyan);">{{ len .Pages }}</span>
+        <span style="font-size:.72rem;color:var(--text-muted);display:block;">Labs publiés</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <!-- SEARCH -->
+    <div class="search-wrapper" style="margin-bottom:1.5rem;">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="search-input" placeholder="Rechercher un lab, tag, technologie…">
+    </div>
+
+    <!-- FILTRES -->
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <div class="filter-sep"></div>
+      <button class="filter-btn" data-filter="infrastructure">⬡ Infrastructure</button>
+      <button class="filter-btn" data-filter="reseau-securite">◈ Réseau & Sécurité</button>
+      <button class="filter-btn" data-filter="cybersecurite">◉ Cybersécurité</button>
+      <button class="filter-btn" data-filter="automatisation">◎ Automatisation</button>
+      <button class="filter-btn" data-filter="gouvernance">◇ Gouvernance IT</button>
+      <button class="filter-btn" data-filter="linux">○ Linux</button>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stats-bar-count"><span id="result-count">{{ len .Pages }}</span> lab(s) affiché(s)</div>
+    </div>
+
+    <!-- GRILLE -->
+    <div class="labs-grid" id="labs-grid">
+      {{ range .Pages }}
+      <article class="lab-card animate-in"
+               data-category="{{ .Params.category }}"
+               data-level="{{ lower .Params.level }}"
+               data-search="{{ lower .Title }} {{ lower .Description }} {{ range .Params.tags }}{{ lower . }} {{ end }}">
+        <div class="lab-card-meta">
+          <span class="lab-level level-{{ lower .Params.level }}">{{ .Params.level }}</span>
+          <span class="lab-env">⬡ {{ .Params.environment }}</span>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);margin-bottom:.75rem;">
+          {{ .Date.Format "2 January 2006" }}
+        </div>
+        <h3 class="lab-card-title">{{ .Title }}</h3>
+        <p class="lab-card-excerpt">{{ .Description }}</p>
+        <div class="lab-card-footer">
+          <div class="lab-tags">
+            {{ range first 4 .Params.tags }}<span class="lab-tag">{{ . }}</span>{{ end }}
+          </div>
+          <span class="lab-duration">⏱ {{ .Params.duration }}</span>
+        </div>
+        <a href="{{ .RelPermalink }}" class="lab-card-link">
+          Accéder au lab
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="2" y1="8" x2="14" y2="8"/><polyline points="9,3 14,8 9,13"/>
+          </svg>
+        </a>
+      </article>
+      {{ end }}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  const grid = document.getElementById('labs-grid');
+  const cards = Array.from(grid.querySelectorAll('.lab-card'));
+  const countEl = document.getElementById('result-count');
+  let activeCat = 'all';
+  let search = '';
+
+  // URL params
+  const p = new URLSearchParams(window.location.search);
+  if(p.get('cat')) activeCat = p.get('cat');
+
+  function filter(){
+    let n = 0;
+    cards.forEach(c => {
+      const cat = c.dataset.category || '';
+      const s = c.dataset.search || '';
+      const matchCat = activeCat === 'all' || cat === activeCat;
+      const matchSearch = !search || s.includes(search.toLowerCase());
+      const show = matchCat && matchSearch;
+      c.style.display = show ? '' : 'none';
+      if(show) n++;
+    });
+    countEl.textContent = n;
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    if(btn.dataset.filter === activeCat) btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.filter;
+      filter();
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', e => {
+    search = e.target.value;
+    filter();
+  });
+
+  filter();
+})();
+</script>
+{{ end }}
